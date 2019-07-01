@@ -1,6 +1,6 @@
 {
   "name": "animated-container",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "An animated container.",
   "keywords": [
     "custom element",
@@ -34,8 +34,5 @@
     "@stencil/core": "^1.0.7"
   },
   "license": "MIT",
-  "dependencies": {
-    "@juggle/resize-observer": "^2.0.3",
-    "collections": "^5.1.9"
-  }
+  "dependencies": {}
 }

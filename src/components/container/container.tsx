@@ -15,9 +15,9 @@ export class Container {
 
   @Element() host: HTMLElement;
 
+  vDom = {};
   childCount: number;
   children: Element[];
-  vDom = new SortedMap();
   computedDelay: number = 0;
   delay: number = this.stagger;
   mutationObserver: MutationObserver;
@@ -71,16 +71,17 @@ export class Container {
     this.childCount = this.children.length;
   };
 
-  windowResize() {
+  windowResize = () => {
     this._animate(this.host);
     this.children.forEach(child => this._animate(child));
-  }
+  };
 
   createVDOM(...nodes: any) {
     nodes.forEach((node: HTMLElement) => {
-      let key: number = this.random(0, this.vDom.length);
-      while (this.vDom.has(key)) {
-        key = this.random(0, this.vDom.length);
+      let length = Object.keys(this.vDom).length;
+      let key: number = this.random(0, length);
+      while (this.vDom[key]) {
+        key = this.random(0, length);
       }
 
       const nodeRect = this.getRect(node);
@@ -91,15 +92,15 @@ export class Container {
         height: nodeRect.height
       };
 
-      this.vDom.set(key, rect);
+      this.vDom[key] = rect;
       node.setAttribute("data-key", `${key}`);
     });
   }
 
   _animate(target: any, delay: number = 0) {
-    const key = Number(target.getAttribute("data-key"));
+    const key = parseFloat(target.getAttribute("data-key"));
     const newRect = this.getRect(target);
-    const oldRect = this.vDom.get(key);
+    const oldRect = this.vDom[key];
     const computedStyle = getComputedStyle(target);
 
     if (
@@ -132,8 +133,8 @@ export class Container {
       );
 
       animation.onfinish = () => {
+        this.vDom = {};
         animation.cancel();
-        this.vDom.clear();
         this.createVDOM(this.host, ...this.children);
       };
     }
