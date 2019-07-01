@@ -1,4 +1,3 @@
-import SortedMap from "collections/sorted-map";
 import { Component, Prop, h, Watch, Element } from "@stencil/core";
 
 @Component({
@@ -39,7 +38,7 @@ export class Container {
   }
 
   disconnectedCallback() {
-    this.vDom.clear();
+    this.vDom = {};
     this.disconnectObservers();
   }
 
