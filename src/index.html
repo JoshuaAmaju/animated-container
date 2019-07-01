@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>AnimatedContainer</title>
+
+    <script type="module" src="/build/animated-container.esm.js"></script>
+    <script nomodule src="/build/animated-container.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+      }
+
+      .container {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      animated-container {
+        padding: 1em;
+        display: flex;
+        flex-wrap: wrap;
+        background: #ccc;
+        align-items: center;
+        justify-content: center;
+      }
+
+      animated-container > * {
+        margin: 1em;
+        width: 10em;
+        height: 10em;
+        padding: 1em;
+        background: #fff;
+        border-radius: 5px;
+        display: inline-block;
+        transform-origin: top;
+      }
+
+      animated-container > *.remove {
+        opacity: 0;
+        transition: 0.25s;
+        transform: scale3d(1, 0, 0);
+      }
+
+      .actions {
+        right: 0;
+        bottom: 0;
+        margin: 1em;
+        position: fixed;
+      }
+
+      .actions * + * {
+        margin-left: 1em;
+      }
+
+      button {
+        border: none;
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0.7em 1.5em;
+        background: rgb(40, 40, 206);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <animated-container
+        stagger="100"
+        duration="500"
+        easing="cubic-bezier(0.68, -0.55, 0.27, 1.55)"
+      ></animated-container>
+
+      <div class="actions">
+        <button id="shuffle">Shuffle</button>
+        <button id="insert">Random insert</button>
+        <button id="remove">Random remove</button>
+      </div>
+    </div>
+
+    <script>
+      let count = 20;
+      let stagger = 100;
+      const insert = document.querySelector("#insert");
+      const remove = document.querySelector("#remove");
+      const shuffle = document.querySelector("#shuffle");
+      const animatedContainer = document.querySelector("animated-container");
+
+      for (let i = 0; i < count; i++) {
+        const item = document.createElement("div");
+        if (i === 4) item.className = "blue";
+        item.textContent = i;
+        animatedContainer.appendChild(item);
+      }
+
+      insert.addEventListener("click", e => {
+        const children = animatedContainer.children;
+        const item = document.createElement("div");
+        const random_item = children[random(0, children.length - 1)];
+        item.textContent = count++;
+        item.animate(
+          [
+            {
+              opacity: 0,
+              background: "blue",
+              transform: "translate3d(100px, 0, 0)"
+            },
+            {
+              opacity: 1,
+              background: "white",
+              transform: "translate3d(0, 0, 0)"
+            }
+          ],
+          { duration: 250 }
+        );
+
+        animatedContainer.insertBefore(item, random_item);
+        animatedContainer.setAttribute("stagger", stagger / count);
+      });
+
+      remove.addEventListener("click", e => {
+        const children = animatedContainer.children;
+        const random_item = children[random(0, children.length - 1)];
+        const end = () => {
+          count--;
+          animatedContainer.removeChild(random_item);
+          random_item.removeEventListener("transitionend", end);
+          animatedContainer.setAttribute("stagger", stagger / count);
+        };
+
+        random_item.classList.add("remove");
+        random_item.addEventListener("transitionend", end);
+      });
+
+      shuffle.addEventListener("click", () => {
+        _shuffle(animatedContainer.children);
+      });
+
+      function _shuffle(elements) {
+        let len = elements.length;
+
+        for (let i = 0; i < len; i++) {
+          const a = elements[random(0, len - 1)];
+          const b = elements[random(0, len - 1)];
+          a.parentNode.insertBefore(b, a);
+        }
+      }
+
+      function random(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+    </script>
+  </body>
+</html>

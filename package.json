@@ -1,0 +1,41 @@
+{
+  "name": "animated-container",
+  "version": "0.0.1",
+  "description": "An animated container.",
+  "keywords": [
+    "custom element",
+    "web component",
+    "container",
+    "animation",
+    "animated"
+  ],
+  "repository": "https://github.com/JoshuaAmaju/animated-container.git",
+  "author": "Joshua Amaju <princejosh0007@gmail.com>",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/animated-container/animated-container.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "devDependencies": {
+    "@stencil/core": "^1.0.7"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@juggle/resize-observer": "^2.0.3",
+    "collections": "^5.1.9"
+  }
+}
