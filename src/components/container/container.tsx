@@ -1,3 +1,4 @@
+import { getRect, random } from "../../utils/utils";
 import { Component, Prop, h, Watch, Element } from "@stencil/core";
 
 @Component({
@@ -78,12 +79,11 @@ export class Container {
   createVDOM(...nodes: any) {
     nodes.forEach((node: HTMLElement) => {
       let length = Object.keys(this.vDom).length;
-      let key: number = this.random(0, length);
-      while (this.vDom[key]) {
-        key = this.random(0, length);
-      }
+      let key: number = random(0, length);
 
-      const nodeRect = this.getRect(node);
+      while (this.vDom[key]) key = random(0, length);
+
+      const nodeRect = getRect(node);
       const rect = {
         top: nodeRect.top,
         left: nodeRect.left,
@@ -98,7 +98,7 @@ export class Container {
 
   _animate(target: any, delay: number = 0) {
     const key = parseFloat(target.getAttribute("data-key"));
-    const newRect = this.getRect(target);
+    const newRect = getRect(target);
     const oldRect = this.vDom[key];
     const computedStyle = getComputedStyle(target);
 
@@ -132,21 +132,11 @@ export class Container {
       );
 
       animation.onfinish = () => {
-        this.vDom = {};
         animation.cancel();
+        this.vDom = {};
         this.createVDOM(this.host, ...this.children);
       };
     }
-  }
-
-  random(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  getRect(element: HTMLElement) {
-    return element.getBoundingClientRect();
   }
 
   @Watch("stagger")
