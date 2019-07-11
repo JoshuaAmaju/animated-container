@@ -1,4 +1,5 @@
-import { getRect, random } from "../../utils/utils";
+import { getRect, random, hasValueChanged } from "../../utils/utils";
+import ResizeObserver from "@juggle/resize-observer";
 import { Component, Prop, h, Watch, Element } from "@stencil/core";
 
 @Component({
@@ -19,7 +20,9 @@ export class Container {
   childCount: number;
   children: Element[];
   computedDelay: number = 0;
+  isAnimating: boolean = false;
   delay: number = this.stagger;
+  resizeObserver: ResizeObserver;
   mutationObserver: MutationObserver;
   mutationObserverConfig = { childList: true };
 
@@ -30,10 +33,15 @@ export class Container {
     // creates a representation of the dom.
     this.createVDOM(this.host, ...this.children);
 
+    /** create ResizeObserver instance and
+     * listen for resize events.
+     */
+    this.resizeObserver = new ResizeObserver(this.observerChanges);
+
     /** create MutationObserver instance and
      * listen for mutation events.
      */
-    this.mutationObserver = new MutationObserver(this.mutationObserverCallback);
+    this.mutationObserver = new MutationObserver(this.observerChanges);
 
     this.setObservers();
   }
@@ -44,12 +52,14 @@ export class Container {
   }
 
   setObservers() {
+    this.resizeObserver.observe(this.host);
     this.mutationObserver.observe(this.host, this.mutationObserverConfig);
 
     window.addEventListener("resize", this.windowResize);
 
     // listen for mutation and resize events on child elements.
     this.children.forEach(child => {
+      this.resizeObserver.observe(child);
       this.mutationObserver.observe(child, this.mutationObserverConfig);
     });
   }
@@ -59,8 +69,9 @@ export class Container {
     window.removeEventListener("resize", this.windowResize);
   }
 
-  mutationObserverCallback = () => {
+  observerChanges = () => {
     this._animate(this.host);
+
     this.children.forEach((child, i) => {
       this._animate(child, this.computedDelay);
       this.computedDelay += this.delay;
@@ -102,38 +113,72 @@ export class Container {
     const oldRect = this.vDom[key];
     const computedStyle = getComputedStyle(target);
 
+    // const transitionDuration = target.style.transitionDuration;
+    // target.style.transition = "none";
+
+    if (target.hasAttribute("data-is-animating")) return;
+
     if (
       computedStyle.position === "static" ||
       computedStyle.position === "relative"
     ) {
-      const animation = target.animate(
-        [
-          {
-            position: "relative",
-            width: `${oldRect.width}px`,
-            height: `${oldRect.height}px`,
-            top: `${oldRect.top - newRect.top}px`,
-            left: `${oldRect.left - newRect.left}px`
-          },
-          {
-            top: 0,
-            left: 0,
-            position: "relative",
-            width: `${newRect.width}px`,
-            height: `${newRect.height}px`
-          }
-        ],
-        {
-          delay,
-          fill: "both",
-          easing: this.easing,
-          duration: this.duration
+      const values = ["top", "left", "width", "height"];
+      const changedValues = [];
+
+      // checks if specified values changed
+      values.map(value => {
+        if (hasValueChanged(oldRect, newRect, value)) {
+          changedValues.push(value);
         }
-      );
+      });
+
+      const toAnimation = {
+        position: "relative"
+      };
+
+      const fromAnimation = {
+        position: "relative"
+      };
+
+      if (changedValues.length === 0) return;
+
+      /**
+       * collects old and new values that changed for
+       * animation.
+       */
+      changedValues.map(changedValue => {
+        let newValue = newRect[changedValue];
+        let oldValue = oldRect[changedValue];
+
+        if (changedValue === "top" || changedValue === "left") {
+          newValue = 0;
+          oldValue = oldRect[changedValue] - newRect[changedValue];
+        }
+
+        toAnimation[changedValue] = `${newValue}px`;
+        fromAnimation[changedValue] = `${oldValue}px`;
+      });
+
+      const animation = target.animate([fromAnimation, toAnimation], {
+        delay,
+        fill: "backwards",
+        easing: this.easing,
+        duration: this.duration
+      });
+
+      target.setAttribute("data-is-animating", true);
 
       animation.onfinish = () => {
-        animation.cancel();
         this.vDom = {};
+        animation.cancel();
+
+        // if (transitionDuration.trim() === "") {
+        //   target.style.removeProperty("transition");
+        // } else {
+        //   target.style.transition = transitionDuration;
+        // }
+
+        target.removeAttribute("data-is-animating");
         this.createVDOM(this.host, ...this.children);
       };
     }

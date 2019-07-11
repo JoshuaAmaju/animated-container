@@ -34,5 +34,7 @@
     "@stencil/core": "^1.0.7"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "@juggle/resize-observer": "^2.0.3"
+  }
 }

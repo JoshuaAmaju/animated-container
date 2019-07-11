@@ -76,14 +76,10 @@
   </head>
   <body>
     <div class="container">
-      <animated-container
-        stagger="100"
-        duration="500"
-        easing="cubic-bezier(0.68, -0.55, 0.27, 1.55)"
-      ></animated-container>
-
+      <animated-container></animated-container>
       <div class="actions">
         <button id="shuffle">Shuffle</button>
+        <button id="width">Random width</button>
         <button id="insert">Random insert</button>
         <button id="remove">Random remove</button>
       </div>
@@ -95,6 +91,7 @@
       const insert = document.querySelector("#insert");
       const remove = document.querySelector("#remove");
       const shuffle = document.querySelector("#shuffle");
+      const randWidth = document.querySelector("#width");
       const animatedContainer = document.querySelector("animated-container");
 
       for (let i = 0; i < count; i++) {
@@ -103,6 +100,13 @@
         item.textContent = i;
         animatedContainer.appendChild(item);
       }
+
+      randWidth.addEventListener("click", () => {
+        const children = animatedContainer.children;
+        const random_item = children[0];
+        const width = random(100, 300);
+        random_item.style.width = `${width}px`;
+      });
 
       insert.addEventListener("click", e => {
         const children = animatedContainer.children;
