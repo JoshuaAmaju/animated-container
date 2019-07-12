@@ -13,3 +13,11 @@ To use it, include:
 ```bash
 <animated-container></animated-container>
 ```
+
+## Properties
+
+| Property   | Attribute  | Description | Type     | Default         |
+| ---------- | ---------- | ----------- | -------- | --------------- |
+| `duration` | `duration` |             | `number` | `250`           |
+| `easing`   | `easing`   |             | `string` | `"ease-in-out"` |
+| `stagger`  | `stagger`  |             | `number` | `0`             |
