@@ -6,6 +6,7 @@
 *,
 *::after,
 *::before {
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -37,6 +38,7 @@ select {
 
 html,
 body {
+  height: 100%;
   height: 100vh;
   line-height: 1.5;
   overflow-x: hidden;
@@ -67,9 +69,15 @@ input,
 
 .loader,
 .hero-side-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   background: #fff;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
 }
 
@@ -80,6 +88,8 @@ input,
   width: 100%;
   height: 100%;
   position: fixed;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
   transition: 0.5s;
 }
 
@@ -90,6 +100,7 @@ body.loading .loader {
 
 body:not(.loading) .loader div {
   opacity: 0;
+  -webkit-animation-play-state: paused;
   animation-play-state: paused;
 }
 
@@ -99,11 +110,20 @@ body:not(.loading) .loader div {
   height: 1em;
   border-radius: 100px;
   background: #ccccccb8;
+  -webkit-animation: loader 0.5s ease-in-out infinite alternate;
   animation: loader 0.5s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes loader {
+  to {
+    -webkit-transform: scale3d(2, 2, 1);
+    transform: scale3d(2, 2, 1);
+  }
 }
 
 @keyframes loader {
   to {
+    -webkit-transform: scale3d(2, 2, 1);
     transform: scale3d(2, 2, 1);
   }
 }
@@ -111,6 +131,8 @@ body:not(.loading) .loader div {
 .hero-side-left {
   height: 90%;
   font-size: 1.7em;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
   transition: 0.25s;
   position: relative;
   text-align: center;
@@ -128,12 +150,16 @@ body:not(.loading) .loader div {
 }
 
 body:not(.loading) .hero-side-left h1 {
+  -webkit-animation-delay: 5s;
   animation-delay: 5s;
+  -webkit-animation: text-anim 0.5s ease-in-out;
   animation: text-anim 0.5s ease-in-out;
 }
 
 body:not(.loading) .hero-side-left::before {
+  -webkit-animation-delay: 0.6s;
   animation-delay: 0.6s;
+  -webkit-animation: transparent-text-anim 0.5s ease-in-out;
   animation: transparent-text-anim 0.5s ease-in-out;
 }
 
@@ -145,16 +171,34 @@ body:not(.loading) .hero-side-left::before {
   position: relative;
 }
 
+@-webkit-keyframes text-anim {
+  from {
+    opacity: 0.5;
+    -webkit-transform: translate3d(0, 100px, 0);
+    transform: translate3d(0, 100px, 0);
+  }
+}
+
 @keyframes text-anim {
   from {
     opacity: 0.5;
+    -webkit-transform: translate3d(0, 100px, 0);
     transform: translate3d(0, 100px, 0);
+  }
+}
+
+@-webkit-keyframes transparent-text-anim {
+  from {
+    opacity: 0.5;
+    -webkit-transform: scale3d(0.5, 0.5, 1);
+    transform: scale3d(0.5, 0.5, 1);
   }
 }
 
 @keyframes transparent-text-anim {
   from {
     opacity: 0.5;
+    -webkit-transform: scale3d(0.5, 0.5, 1);
     transform: scale3d(0.5, 0.5, 1);
   }
 }
@@ -164,6 +208,8 @@ body.loading main {
 }
 
 main {
+  -webkit-transition: 0.5s ease-in-out 0.2s;
+  -o-transition: 0.5s ease-in-out 0.2s;
   transition: 0.5s ease-in-out 0.2s;
 }
 
@@ -199,20 +245,32 @@ main {
 }
 
 .grid-example .controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
 .controls * {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
   flex: 1;
   padding: 1em;
   border-bottom: 1px solid var(--accent-color);
 }
 
 .grid-example .grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
 }
 
@@ -227,7 +285,10 @@ main {
 
 .item.remove {
   opacity: 0;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
   transition: 0.25s;
+  -webkit-transform: scale3d(1, 0, 0);
   transform: scale3d(1, 0, 0);
 }
 
@@ -236,6 +297,8 @@ main {
 }
 
 .buttons-example {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -245,7 +308,11 @@ main {
 }
 
 .actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
 }
 
@@ -265,9 +332,15 @@ main {
 
 footer {
   padding: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   font-size: 1.3em;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
@@ -279,8 +352,9 @@ footer .social a {
   text-decoration: none;
 }
 
-@supports (display: grid) {
+@supports ((display: -ms-grid) or (display: grid)) {
   .grid-example .controls {
+    display: -ms-grid;
     display: grid;
     grid-gap: 1em;
     grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
@@ -292,11 +366,34 @@ footer .social a {
 
   .grid-example .grid {
     grid-gap: 1em;
+    display: -ms-grid;
     display: grid;
+    -ms-grid-rows: auto;
     grid-template-rows: auto;
+    -ms-grid-columns: 1fr 1em 1fr 1em 1fr 1em 1fr;
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
+  .grid-example .grid > *:nth-child(1) {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+  }
+
+  .grid-example .grid > *:nth-child(2) {
+    -ms-grid-row: 1;
+    -ms-grid-column: 3;
+  }
+
+  .grid-example .grid > *:nth-child(3) {
+    -ms-grid-row: 1;
+    -ms-grid-column: 5;
+  }
+
+  .grid-example .grid > *:nth-child(4) {
+    -ms-grid-row: 1;
+    -ms-grid-column: 7;
+  }
+
   .grid .item {
     margin: 0;
     width: auto;
