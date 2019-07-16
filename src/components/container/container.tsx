@@ -20,13 +20,13 @@ export class Container {
   childCount: number;
   children: Element[];
   computedDelay: number = 0;
-  isAnimating: boolean = false;
   delay: number = this.stagger;
   resizeObserver: ResizeObserver;
   mutationObserver: MutationObserver;
   mutationObserverConfig = { childList: true };
+  valuesToWatch = ["top", "left", "width", "height"];
 
-  componentDidLoad() {
+  componentDidRender() {
     this.children = Array.from(this.host.querySelectorAll("*"));
     this.childCount = this.children.length;
 
@@ -36,12 +36,12 @@ export class Container {
     /** create ResizeObserver instance and
      * listen for resize events.
      */
-    this.resizeObserver = new ResizeObserver(this.observerChanges);
+    this.resizeObserver = new ResizeObserver(this.observeChanges);
 
     /** create MutationObserver instance and
      * listen for mutation events.
      */
-    this.mutationObserver = new MutationObserver(this.observerChanges);
+    this.mutationObserver = new MutationObserver(this.observeChanges);
 
     this.setObservers();
   }
@@ -69,14 +69,11 @@ export class Container {
     window.removeEventListener("resize", this.windowResize);
   }
 
-  observerChanges = () => {
+  observeChanges = () => {
+    this.computedDelay = 0;
     this._animate(this.host);
 
-    this.children.forEach((child, i) => {
-      this._animate(child, this.computedDelay);
-      this.computedDelay += this.delay;
-      if (i === this.childCount - 1) this.computedDelay = 0;
-    });
+    this.children.forEach(child => this._animate(child));
 
     this.children = Array.from(this.host.querySelectorAll("*"));
     this.childCount = this.children.length;
@@ -84,7 +81,10 @@ export class Container {
 
   windowResize = () => {
     this._animate(this.host);
-    this.children.forEach(child => this._animate(child));
+    this.children.forEach((child, i) => {
+      this._animate(child);
+      if (i === this.childCount - 1) this.computedDelay = 0;
+    });
   };
 
   createVDOM(...nodes: any) {
@@ -95,19 +95,18 @@ export class Container {
       while (this.vDom[key]) key = random(0, length);
 
       const nodeRect = getRect(node);
-      const rect = {
-        top: nodeRect.top,
-        left: nodeRect.left,
-        width: nodeRect.width,
-        height: nodeRect.height
-      };
+      const rect = {};
+
+      this.valuesToWatch.forEach(value => {
+        rect[value] = nodeRect[value];
+      });
 
       this.vDom[key] = rect;
       node.setAttribute("data-key", `${key}`);
     });
   }
 
-  _animate(target: any, delay: number = 0) {
+  _animate(target: any) {
     const key = parseFloat(target.getAttribute("data-key"));
     const newRect = getRect(target);
     const oldRect = this.vDom[key];
@@ -122,11 +121,10 @@ export class Container {
       computedStyle.position === "static" ||
       computedStyle.position === "relative"
     ) {
-      const values = ["top", "left", "width", "height"];
       const changedValues = [];
 
       // checks if specified values changed
-      values.map(value => {
+      this.valuesToWatch.map(value => {
         if (hasValueChanged(oldRect, newRect, value)) {
           changedValues.push(value);
         }
@@ -136,11 +134,11 @@ export class Container {
         position: "relative"
       };
 
-      const fromAnimation = {
-        position: "relative"
-      };
+      const fromAnimation = Object.assign({}, toAnimation);
 
       if (changedValues.length === 0) return;
+
+      console.log(this.computedDelay, this.delay);
 
       /**
        * collects old and new values that changed for
@@ -160,12 +158,13 @@ export class Container {
       });
 
       const animation = target.animate([fromAnimation, toAnimation], {
-        delay,
         fill: "backwards",
         easing: this.easing,
-        duration: this.duration
+        duration: this.duration,
+        delay: this.computedDelay
       });
 
+      this.computedDelay += this.delay;
       target.setAttribute("data-is-animating", true);
 
       animation.onfinish = () => {

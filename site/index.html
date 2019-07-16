@@ -1,14 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script
+      type="module"
+      src="https://unpkg.com/animated-container@0.2.1/dist/animated-container/animated-container.esm.js"
+    ></script>
+    <script
+      nomodule=""
+      src="https://unpkg.com/animated-container@0.2.1/dist/animated-container/animated-container.js"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
     <title>AnimatedContainer</title>
-</head>
-<body>
-    
-    
+  </head>
+  <body class="loading">
+    <div class="loader"><div></div></div>
 
-</body>
+    <div class="container">
+      <div class="hero-side-left" title="Animated-Container">
+        <h1>Animated-Container</h1>
+      </div>
+
+      <main>
+        <div class="content">
+          <div class="introduction">
+            <h2 class="section-title">Animated-Container</h2>
+            <p>
+              Animated container is a <strong>HTML custom element</strong> built
+              using
+              <a href="http://stenciljs.com" target="_blank">Stencil JS</a>. It
+              helps create a smooth transition/animation of items moving around
+              to communicate change. It animates the positon and size both on
+              itself and its' children when changes are made to the DOM.
+            </p>
+            <p>
+              PS: Animated container is layout agnostic. You can style it which
+              ever way you see fit.
+            </p>
+          </div>
+          <div class="install">
+            <h2 class="section-title">Installation</h2>
+            <div class="process">
+              <p><code>npm install animated-container</code></p>
+              <h3>Or</h3>
+              <code style="display: block;">
+                &lt;script
+                src="https://unpkg.com/animated-container@0.2.1/dist/animated-container.js&lt;/script>
+              </code>
+            </div>
+          </div>
+          <div class="usage">
+            <h2 class="section-title">Usage</h2>
+            <p>
+              A <code>data-key</code> attribute is added to every item,
+              including the parent container itself.
+            </p>
+            <pre>
+            &lt;animated-container>
+              &lt;div class="item">item 1&lt;/div>
+              &lt;div class="item">item 2&lt;/div>
+              &lt;div class="item">item 3&lt;/div>
+            &lt;/animated-container>
+            </pre>
+            <h3 class="section-subtitle">Attributes</h3>
+            <ul>
+              <li>easing</li>
+              <li>stagger</li>
+              <li>duration</li>
+            </ul>
+          </div>
+          <div class="examples">
+            <h2 class="section-title">Examples</h2>
+            <div class="example">
+              <h3 class="section-subtitle">Grid</h3>
+              <div class="grid-example">
+                <div class="controls">
+                  <input
+                    type="number"
+                    name="duration"
+                    class="duration"
+                    placeholder="Duration"
+                  />
+                  <input
+                    type="number"
+                    name="stagger"
+                    class="stagger"
+                    placeholder="Stagger"
+                  />
+                  <select name="easings" class="easings">
+                    <option value="linear">linear</option>
+                    <option value="ease-in">ease-in</option>
+                    <option value="ease-out">ease-out</option>
+                    <option value="ease-in-out">ease-in-out</option>
+                    <option value="cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+                      >Quadratic</option
+                    >
+                    <option value="cubic-bezier(0.4, 0, 1, 1)"
+                      >Fast Out, Linear In</option
+                    >
+                  </select>
+                </div>
+                <animated-container class="grid">
+                  <div class="item">item 1</div>
+                  <div class="item">item 2</div>
+                  <div class="item">item 3</div>
+                  <div class="item">item 4</div>
+                  <div class="item">item 5</div>
+                  <div class="item">item 6</div>
+                </animated-container>
+                <div class="actions">
+                  <button id="shuffle">shuffle</button>
+                  <button id="insert">insert</button>
+                  <button id="remove">remove</button>
+                </div>
+              </div>
+            </div>
+            <div class="example">
+              <h3 class="section-subtitle">Animated button</h3>
+              <div class="buttons-example">
+                <animated-container
+                  ><button>click me</button></animated-container
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer>
+          <h5>
+            Inspired by
+            <a href="https://isotope.metafizzy.co/" target="_blank">Isotope</a> and
+            Instagram stories.
+          </h5>
+          <div class="social">
+            <a href="http://twitter.com/JoshuaAmaju" target="_blank" rel="noopener noreferrer">
+              <img src="https://img.icons8.com/ios-glyphs/30/000000/twitter.png" width="25">
+            </a>
+            <a href="https://github.com/JoshuaAmaju" target="_blank" rel="noopener noreferrer">
+              <img src="https://img.icons8.com/ios-glyphs/30/000000/github.png" width="25">
+            </a>
+            <a href="https://www.instagram.com/JoshuaAmaju/" target="_blank" rel="noopener noreferrer">
+              <img src="https://img.icons8.com/material/50/000000/instagram-new.png" width="25">
+            </a>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

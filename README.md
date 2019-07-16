@@ -8,6 +8,12 @@ A custom element container that animates the position of itself and its children
 npm install animated-container
 ```
 
+## Via CDN
+
+```
+<script src"https://unpkg.com/animated-container@0.1.1/dist/animated-container.js"></script>
+```
+
 To use it, include:
 
 ```bash
