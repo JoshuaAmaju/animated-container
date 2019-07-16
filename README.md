@@ -28,5 +28,4 @@ To use it, include:
 | `easing`   | `easing`   |             | `string` | `"ease-in-out"` |
 | `stagger`  | `stagger`  |             | `number` | `0`             |
 
-
 #### [Demo]: https://joshuaamaju.github.io/animated-container/
