@@ -12,564 +12,157 @@
     <script nomodule src="/build/animated-container.js"></script>
 
     <style>
-      @font-face {
-  font-family: Cormorant;
-  src: url(CormorantGaramond-Regular.ttf);
-}
+      * {
+        box-sizing: border-box;
+      }
 
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-}
+      body {
+        margin: 0;
+        height: 100vh;
+      }
 
-:root {
-  --dark-color: #4c5c68;
-  --muted-color: #e8e9eb;
-  --accent-color: rgb(29, 29, 231);
-}
+      .container {
+        height: 100%;
+        overflow: hidden;
+      }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-ul,
-body {
-  margin: 0;
-}
+      animated-container {
+        padding: 1em;
+        /* display: flex; */
+        flex-wrap: wrap;
+        background: #ccc;
+        align-items: center;
+        justify-content: center;
+      }
 
-input,
-button,
-select {
-  border: none;
-  outline: none;
-  background: none;
-  font-family: inherit;
-}
+      animated-container > * {
+        margin: 1em;
+        width: 10em;
+        height: 10em;
+        padding: 1em;
+        background: #fff;
+        border-radius: 5px;
+        display: inline-block;
+        transform-origin: top;
+      }
 
-html,
-body {
-  height: 100%;
-  height: 100vh;
-  line-height: 1.5;
-  overflow-x: hidden;
-  background: var(--muted-color);
-  font-family: "Cormorant", serif;
-}
+      animated-container > *.remove {
+        opacity: 0;
+        transition: 0.25s;
+        transform: scale3d(1, 0, 0);
+      }
 
-body.loading {
-  overflow: hidden;
-}
+      .expand {
+        width: 25em;
+      }
 
-pre,
-code {
-  padding: 0.3em;
-  background: #ccc;
-  border-radius: 5px;
-}
+      .actions {
+        right: 0;
+        bottom: 0;
+        margin: 1em;
+        position: fixed;
+      }
 
-.container {
-  height: 100%;
-}
+      .actions * + * {
+        margin-left: 1em;
+      }
 
-p,
-input,
-.section-subtitle {
-  font-family: "Corbel", sans-serif;
-}
-
-.loader,
-.hero-side-left {
-  display: flex;
-  background: #fff;
-  align-items: center;
-  justify-content: center;
-}
-
-.loader {
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  transition: 0.5s;
-}
-
-body.loading .loader {
-  z-index: 10;
-  width: 100%;
-}
-
-body:not(.loading) .loader div {
-  opacity: 0;
-  animation-play-state: paused;
-}
-
-.loader div {
-  opacity: 1;
-  width: 1em;
-  height: 1em;
-  border-radius: 100px;
-  background: #ccccccb8;
-  animation: loader 0.5s ease-in-out infinite alternate;
-}
-
-@keyframes loader {
-  to {
-    transform: scale3d(2, 2, 1);
-  }
-}
-
-.hero-side-left {
-  height: 90%;
-  font-size: 1.7em;
-  transition: 0.25s;
-  position: relative;
-  text-align: center;
-  border-bottom: 1px dashed var(--accent-color);
-}
-
-.hero-side-left::before {
-  top: 33%;
-  left: -10%;
-  line-height: 1;
-  font-size: 2.7em;
-  position: absolute;
-  content: attr(title);
-  color: rgba(204, 204, 204, 0.274);
-}
-
-body:not(.loading) .hero-side-left h1 {
-  animation-delay: 5s;
-  animation: text-anim 0.5s ease-in-out;
-}
-
-body:not(.loading) .hero-side-left::before {
-  animation-delay: 0.6s;
-  animation: transparent-text-anim 0.5s ease-in-out;
-}
-
-.hero-side-left h1 {
-  top: 0.5em;
-  z-index: 2;
-  left: 0.5em;
-  color: var(--accent-color);
-  position: relative;
-}
-
-@keyframes text-anim {
-  from {
-    opacity: 0.5;
-    transform: translate3d(0, 100px, 0);
-  }
-}
-
-@keyframes transparent-text-anim {
-  from {
-    opacity: 0.5;
-    transform: scale3d(0.5, 0.5, 1);
-  }
-}
-
-body.loading main {
-  opacity: 0;
-}
-
-main {
-  transition: 0.5s ease-in-out 0.2s;
-}
-
-.introduction {
-  background: rgba(255, 255, 255, 0.651);
-}
-
-.usage,
-.install,
-.examples,
-.introduction {
-  padding: 1em;
-}
-
-.section-title {
-  color: var(--accent-color);
-}
-
-.section-subtitle {
-  color: var(--dark-color);
-}
-
-.install .process > * + * {
-  margin-top: 1em;
-}
-
-.example {
-  margin: 1em 0;
-}
-
-.example > * + * {
-  margin-top: 1em;
-}
-
-.grid-example .controls {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.controls * {
-  flex: 1;
-  padding: 1em;
-  border-bottom: 1px solid var(--accent-color);
-}
-
-.grid-example .grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-}
-
-.grid .item {
-  width: 5em;
-  height: 5em;
-  padding: 1em;
-  margin: 0.5em;
-  background: #fff;
-  border-radius: 5px;
-}
-
-.item.remove {
-  opacity: 0;
-  transition: 0.25s;
-  transform: scale3d(1, 0, 0);
-}
-
-.grid-example > * + * {
-  margin-top: 1em;
-}
-
-.buttons-example {
-  display: flex;
-}
-
-.buttons-example button {
-  text-align: left;
-  white-space: nowrap;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.actions * + *,
-.controls * + *,
-.buttons-example > * + * {
-  margin-left: 1em;
-}
-
-.actions button,
-.buttons-example button {
-  color: #fff;
-  background: var(--accent-color);
-  padding: 0.5em 1em;
-  border-radius: 4px;
-}
-
-footer {
-  padding: 1em;
-  display: flex;
-  font-size: 1.3em;
-  align-items: center;
-  justify-content: space-between;
-}
-
-footer * + * {
-  margin-left: 0.4em;
-}
-
-footer .social a {
-  text-decoration: none;
-}
-
-@supports (display: grid) {
-  .grid-example .controls {
-    display: grid;
-    grid-gap: 1em;
-    grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
-  }
-
-  .controls * + * {
-    margin-left: 0;
-  }
-
-  .grid-example .grid {
-    grid-gap: 1em;
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  
-  .grid .item {
-    margin: 0;
-    width: auto;
-  }
-}
-
-@media (hover: hover) {
-  .hero-side-left {
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    position: fixed;
-    border-bottom: none;
-    border-right: 1px dashed var(--accent-color);
-  }
-
-  .hero-side-left::before {
-    font-size: 4em;
-  }
-
-  .loader {
-    width: 50%;
-  }
-
-  main {
-    width: 50%;
-    margin-left: 50.5%;
-  }
-}
-
+      button {
+        border: none;
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0.7em 1.5em;
+        background: rgb(40, 40, 206);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);
+      }
     </style>
   </head>
   <body>
-      <div class="loader"><div></div></div>
-
-      <div class="container">
-        <div class="hero-side-left" title="Animated-Container">
-          <h1>Animated-Container</h1>
-        </div>
-  
-        <main>
-          <div class="content">
-            <div class="introduction">
-              <h2 class="section-title">Animated-Container</h2>
-              <p>
-                Animated container is a <strong>HTML custom element</strong> built
-                using
-                <a href="http://stenciljs.com" target="_blank">Stencil JS</a>. It
-                helps create a smooth transition/animation of items moving around
-                to communicate change. It animates the positon and size both on
-                itself and its' children when changes are made to the DOM.
-              </p>
-              <p>
-                PS: Animated container is layout agnostic. You can style it which
-                ever way you see fit.
-              </p>
-            </div>
-            <div class="install">
-              <h2 class="section-title">Installation</h2>
-              <div class="process">
-                <p><code>npm install animated-container</code></p>
-                <h3>Or</h3>
-                <code style="display: block;">
-                  &lt;script
-                  src="https://unpkg.com/animated-container@0.2.2/dist/animated-container.js&lt;/script>
-                </code>
-              </div>
-            </div>
-            <div class="usage">
-              <h2 class="section-title">Usage</h2>
-              <p>
-                A <code>data-key</code> attribute is added to every item,
-                including the parent container itself.
-              </p>
-              <pre>
-              &lt;animated-container>
-                &lt;div class="item">item 1&lt;/div>
-                &lt;div class="item">item 2&lt;/div>
-                &lt;div class="item">item 3&lt;/div>
-              &lt;/animated-container>
-              </pre>
-              <h3 class="section-subtitle">Attributes</h3>
-              <ul>
-                <li>easing</li>
-                <li>stagger</li>
-                <li>duration</li>
-              </ul>
-            </div>
-            <div class="examples">
-              <h2 class="section-title">Examples</h2>
-              <div class="example">
-                <h3 class="section-subtitle">Grid</h3>
-                <div class="grid-example">
-                  <div class="controls">
-                    <input
-                      type="number"
-                      name="duration"
-                      class="duration"
-                      placeholder="Duration"
-                    />
-                    <input
-                      type="number"
-                      name="stagger"
-                      class="stagger"
-                      placeholder="Stagger"
-                    />
-                    <select name="easings" class="easings">
-                      <option value="linear">linear</option>
-                      <option value="ease-in">ease-in</option>
-                      <option value="ease-out">ease-out</option>
-                      <option value="ease-in-out">ease-in-out</option>
-                      <option value="cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-                        >Quadratic</option
-                      >
-                      <option value="cubic-bezier(0.4, 0, 1, 1)"
-                        >Fast Out, Linear In</option
-                      >
-                    </select>
-                  </div>
-                  <animated-container class="grid">
-                    <div class="item">item 1</div>
-                    <div class="item">item 2</div>
-                    <div class="item">item 3</div>
-                    <div class="item">item 4</div>
-                    <div class="item">item 5</div>
-                    <div class="item">item 6</div>
-                  </animated-container>
-                  <div class="actions">
-                    <button id="shuffle">shuffle</button>
-                    <button id="insert">insert</button>
-                    <button id="remove">remove</button>
-                  </div>
-                </div>
-              </div>
-              <div class="example">
-                <h3 class="section-subtitle">Animated button</h3>
-                <div class="buttons-example">
-                  <animated-container
-                    ><button>click me</button></animated-container
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <footer>
-            <h5>
-              Inspired by
-              <a href="https://isotope.metafizzy.co/" target="_blank">Isotope</a> and
-              Instagram stories.
-            </h5>
-            <div class="social">
-              <a href="http://twitter.com/JoshuaAmaju" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/twitter.png" width="25">
-              </a>
-              <a href="https://github.com/JoshuaAmaju" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/github.png" width="25">
-              </a>
-              <a href="https://www.instagram.com/JoshuaAmaju/" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.icons8.com/material/50/000000/instagram-new.png" width="25">
-              </a>
-            </div>
-          </footer>
-        </main>
+    <div class="container">
+      <animated-container></animated-container>
+      <div class="actions">
+        <button id="shuffle">Shuffle</button>
+        <button id="insert">Random insert</button>
+        <button id="remove">Random remove</button>
       </div>
+    </div>
 
-      <script>
+    <script>
+      let count = 10;
+      const containers = document.querySelectorAll(".container");
+
       const insert = document.querySelector("#insert");
-const remove = document.querySelector("#remove");
-const shuffle = document.querySelector("#shuffle");
-const animatedContainer = document.querySelector(".grid");
+      const remove = document.querySelector("#remove");
+      const shuffle = document.querySelector("#shuffle");
+      const animatedContainer = document.querySelector("animated-container");
 
-const controls = document.querySelector(".controls");
-const easingsControl = controls.querySelector(".easings");
-const staggerControl = controls.querySelector(".stagger");
-const durationControl = controls.querySelector(".duration");
+      for (let i = 0; i < count; i++) {
+        const item = document.createElement("div");
+        if (i === 4) item.className = "blue";
+        item.textContent = i;
 
-const buttonsExample = document.querySelector(".buttons-example");
-const buttons = buttonsExample.querySelectorAll("button");
+        item.addEventListener("click", () => item.classList.toggle("expand"));
 
-[staggerControl, durationControl, easingsControl].map(control => {
-  control.addEventListener("change", e => {
-    animatedContainer.setAttribute(control.name, control.value);
-  });
-});
-
-window.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.remove('loading');
-});
-
-buttons.forEach(button => {
-  button.addEventListener("click", () => {
-    const text = button.textContent;
-    if (text === "click me") {
-      button.textContent = text + " again";
-    } else {
-      button.textContent = "click me";
-    }
-  });
-});
-
-insert.addEventListener("click", e => {
-  const children = animatedContainer.children;
-  const item = document.createElement("div");
-  const random_item = children[random(0, children.length - 1)];
-  item.textContent = "item";
-  item.className = "item";
-  item.animate(
-    [
-      {
-        opacity: 0,
-        background: "blue",
-        transform: "translate3d(100px, 0, 0)"
-      },
-      {
-        opacity: 1,
-        background: "white",
-        transform: "translate3d(0, 0, 0)"
+        animatedContainer.appendChild(item);
       }
-    ],
-    { duration: 250 }
-  );
 
-  animatedContainer.insertBefore(item, random_item);
-});
+      insert.addEventListener("click", e => {
+        const children = animatedContainer.children;
+        const item = document.createElement("div");
+        const random_item = children[random(0, children.length - 1)];
+        item.textContent = count++;
+        item.animate(
+          [
+            {
+              opacity: 0,
+              background: "blue",
+              transform: "translate3d(100px, 0, 0)"
+            },
+            {
+              opacity: 1,
+              background: "white",
+              transform: "translate3d(0, 0, 0)"
+            }
+          ],
+          { duration: 250 }
+        );
 
-remove.addEventListener("click", e => {
-  const children = animatedContainer.children;
-  const random_item = children[random(0, children.length - 1)];
-  const end = () => {
-    animatedContainer.removeChild(random_item);
-    random_item.removeEventListener("transitionend", end);
-  };
+        animatedContainer.insertBefore(item, random_item);
+      });
 
-  random_item.classList.add("remove");
-  random_item.addEventListener("transitionend", end);
-});
+      remove.addEventListener("click", e => {
+        const children = animatedContainer.children;
+        const random_item = children[random(0, children.length - 1)];
+        const end = () => {
+          count--;
+          animatedContainer.removeChild(random_item);
+          random_item.removeEventListener("transitionend", end);
+        };
 
-shuffle.addEventListener("click", () => {
-  _shuffle(animatedContainer.children);
-});
+        random_item.classList.add("remove");
+        random_item.addEventListener("transitionend", end);
+      });
 
-function _shuffle(elements) {
-  let len = elements.length;
+      shuffle.addEventListener("click", () => {
+        _shuffle(animatedContainer.children);
+      });
 
-  for (let i = 0; i < len; i++) {
-    const a = elements[random(0, len - 1)];
-    const b = elements[random(0, len - 1)];
-    a.parentNode.insertBefore(b, a);
-  }
-}
+      function _shuffle(elements) {
+        let len = elements.length;
 
-function random(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+        for (let i = 0; i < len; i++) {
+          const a = elements[random(0, len - 1)];
+          const b = elements[random(0, len - 1)];
+          a.parentNode.insertBefore(b, a);
+        }
+      }
 
-      </script>
+      function random(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+    </script>
   </body>
 </html>
