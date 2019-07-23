@@ -11,7 +11,7 @@ npm install animated-container
 ## Via CDN
 
 ```
-<script src"https://unpkg.com/animated-container@0.2.2/dist/animated-container.js"></script>
+<script src"https://unpkg.com/animated-container@0.2.1/dist/animated-container.js"></script>
 ```
 
 To use it, include:

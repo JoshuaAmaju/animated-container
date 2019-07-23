@@ -30,9 +30,6 @@ export class Container {
     this.children = Array.from(this.host.querySelectorAll("*"));
     this.childCount = this.children.length;
 
-    // creates a representation of the dom.
-    this.createVDOM(this.host, ...this.children);
-
     /** create ResizeObserver instance and
      * listen for resize events.
      */
@@ -42,7 +39,12 @@ export class Container {
      * listen for mutation events.
      */
     this.mutationObserver = new MutationObserver(this.observeChanges);
+  }
 
+  componentWillRender() {
+    // creates a representation of the dom.
+    this.createVDOM(this.host, ...this.children);
+    console.log(this.vDom);
     this.setObservers();
   }
 
@@ -138,8 +140,6 @@ export class Container {
 
       if (changedValues.length === 0) return;
 
-      console.log(this.computedDelay, this.delay);
-
       /**
        * collects old and new values that changed for
        * animation.
@@ -151,6 +151,8 @@ export class Container {
         if (changedValue === "top" || changedValue === "left") {
           newValue = 0;
           oldValue = oldRect[changedValue] - newRect[changedValue];
+
+          if (target === this.host) console.log(oldRect, newRect, target);
         }
 
         toAnimation[changedValue] = `${newValue}px`;
