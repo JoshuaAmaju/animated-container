@@ -28,7 +28,7 @@
 
       animated-container {
         padding: 1em;
-        display: flex;
+        /* display: flex; */
         flex-wrap: wrap;
         background: #ccc;
         align-items: center;
@@ -53,7 +53,7 @@
       }
 
       .expand {
-        width: 15em;
+        width: 25em;
       }
 
       .actions {
@@ -80,7 +80,7 @@
   </head>
   <body>
     <div class="container">
-      <animated-container stagger="100" easing="cubic-bezier(0.68, -0.55, 0.27, 1.55)"></animated-container>
+      <animated-container></animated-container>
       <div class="actions">
         <button id="shuffle">Shuffle</button>
         <button id="insert">Random insert</button>
@@ -89,7 +89,7 @@
     </div>
 
     <script>
-      let count = 20;
+      let count = 1;
       const containers = document.querySelectorAll(".container");
 
       const insert = document.querySelector("#insert");

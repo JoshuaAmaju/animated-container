@@ -26,7 +26,7 @@ export class Container {
   mutationObserverConfig = { childList: true };
   valuesToWatch = ["top", "left", "width", "height"];
 
-  componentDidRender() {
+  connectedCallback() {
     this.children = Array.from(this.host.querySelectorAll("*"));
     this.childCount = this.children.length;
 
